@@ -1,0 +1,29 @@
+name = "UnallocatedArrays"
+uuid = "43c9e47c-e622-40fb-bf18-a09fc8c466b6"
+authors = ["ITensor developers <support@itensor.org> and contributors"]
+version = "0.1.0"
+
+[deps]
+Adapt = "79e6a3ab-5dfb-504d-930d-738a2a938a0e"
+FillArrays = "1a297f60-69ca-5386-bcde-b61e274b549b"
+TypeParameterAccessors = "7e5a90cf-f82e-492e-a09b-e3e26432c138"
+UnspecifiedTypes = "42b3faec-625b-4613-8ddc-352bf9672b8d"
+
+[sources]
+TypeParameterAccessors = {url = "https://github.com/ITensor/TypeParameterAccessors.jl"}
+UnspecifiedTypes = {url = "https://github.com/ITensor/UnspecifiedTypes.jl"}
+
+[compat]
+Adapt = "4.1.1"
+Aqua = "0.8.9"
+FillArrays = "1.13.0"
+Test = "1.10"
+UnspecifiedTypes = "0.1.0"
+julia = "1.10"
+
+[extras]
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Aqua", "Test"]
