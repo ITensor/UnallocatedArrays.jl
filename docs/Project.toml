@@ -1,3 +1,10 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
+TypeParameterAccessors = "7e5a90cf-f82e-492e-a09b-e3e26432c138"
+UnallocatedArrays = "43c9e47c-e622-40fb-bf18-a09fc8c466b6"
+UnspecifiedTypes = "42b3faec-625b-4613-8ddc-352bf9672b8d"
+
+[sources]
+TypeParameterAccessors = {url = "https://github.com/ITensor/TypeParameterAccessors.jl"}
+UnspecifiedTypes = {url = "https://github.com/ITensor/UnspecifiedTypes.jl"}
