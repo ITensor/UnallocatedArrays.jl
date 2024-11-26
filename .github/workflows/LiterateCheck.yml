@@ -18,6 +18,9 @@ jobs:
         run: |
           julia  -e '
           using Pkg
+          # TODO: Delete once they are registered.
+          Pkg.add("https://github.com/ITensor/TypeParameterAccessors.jl")
+          Pkg.add("https://github.com/ITensor/UnspecifiedTypes.jl")
           Pkg.develop(PackageSpec(path=pwd()))
           Pkg.instantiate()
           Pkg.add(PackageSpec(name="Literate"))'
