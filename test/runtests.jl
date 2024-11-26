@@ -1,5 +1,4 @@
 @eval module $(gensym())
-using UnallocatedArrays: UnallocatedArrays
 using Test: @testset
 
 @testset "UnallocatedArrays.jl" begin
