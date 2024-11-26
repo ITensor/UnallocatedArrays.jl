@@ -18,7 +18,7 @@ Adapt = "4.1.1"
 Aqua = "0.8.9"
 FillArrays = "1.13.0"
 Test = "1.10"
-UnspecifiedTypes = "≥ 0"
+UnspecifiedTypes = "0.1.0"
 julia = "1.10"
 
 [extras]
