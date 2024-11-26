@@ -1,5 +1,5 @@
-using .TypeParameterAccessors: TypeParameterAccessors
-using NDTensors.UnspecifiedTypes: UnspecifiedArray, UnspecifiedNumber, UnspecifiedZero
+using TypeParameterAccessors: TypeParameterAccessors
+using UnspecifiedTypes: UnspecifiedArray, UnspecifiedNumber, UnspecifiedZero
 
 function TypeParameterAccessors.default_type_parameters(::Type{<:UnallocatedArray})
   return (
