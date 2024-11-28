@@ -15,7 +15,11 @@ tensors and allocating as little data as possible.
 ```julia
 julia> using Pkg: Pkg
 
-julia> Pkg.add("https://github.com/ITensor/UnallocatedArrays.jl")
+julia> Pkg.add(url="https://github.com/ITensor/TypeParameterAccessors.jl")
+
+julia> Pkg.add(url="https://github.com/ITensor/UnspecifiedTypes.jl")
+
+julia> Pkg.add(url="https://github.com/ITensor/UnallocatedArrays.jl")
 ```
 
 ## Examples
