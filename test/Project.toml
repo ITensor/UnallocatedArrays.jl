@@ -6,6 +6,7 @@ LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 NDTensors = "23ae76d9-e61a-49c4-8f12-3f1a16adf9cf"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+TypeParameterAccessors = "7e5a90cf-f82e-492e-a09b-e3e26432c138"
 
 [sources] 
 TypeParameterAccessors = {url = "https://github.com/ITensor/TypeParameterAccessors.jl"} 
