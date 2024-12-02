@@ -12,19 +12,24 @@
 
 # ## Installation instructions
 
+# This package resides in the `ITensor/JuliaRegistry` local registry.
+# In order to install, simply add that registry through your package manager.
+# This step is only required once.
 #=
 ```julia
 julia> using Pkg: Pkg
 
-julia> Pkg.add(url="https://github.com/ITensor/TypeParameterAccessors.jl")
+julia> Pkg.Registry.add(url="https://github.com/ITensor/JuliaRegistry")
+```
+=#
+# Then, the package can be added as usual through the package manager:
 
-julia> Pkg.add(url="https://github.com/ITensor/UnspecifiedTypes.jl")
-
-julia> Pkg.add(url="https://github.com/ITensor/UnallocatedArrays.jl")
+#=
+```julia
+julia> Pkg.add("UnallocatedArrays")
 ```
 =#
 
 # ## Examples
 
 using UnallocatedArrays: UnallocatedArrays
-# Examples go here.
