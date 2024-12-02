@@ -12,7 +12,7 @@ tensors and allocating as little data as possible.
 
 ## Installation instructions
 
-This package resides in the `ITensor/JuliaRegistry` local registry.
+This package resides in the `ITensor/ITensorRegistry` local registry.
 In order to install, simply add that registry through your package manager.
 This step is only required once.
 ```julia
