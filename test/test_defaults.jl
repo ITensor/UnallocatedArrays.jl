@@ -2,6 +2,8 @@
 ## TODO: These are broken, fix them. Also, split off into a
 ## seperate test file, and maybe make a package extension?
 @eval module $(gensym())
+using Pkg
+Pkg.add(url="https://github.com/ITensor/TypeParameterAccessors.jl")
 using FillArrays: Fill, Zeros
 using UnallocatedArrays: UnallocatedFill, UnallocatedZeros
 using TypeParameterAccessors:
