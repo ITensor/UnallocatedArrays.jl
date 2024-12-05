@@ -67,9 +67,16 @@ end
 function FillArrays.broadcasted_fill(f, a::UnallocatedZeros, b, val, ax)
   return UnallocatedFill(Fill(val, ax), alloctype(a))
 end
-
 function FillArrays.broadcasted_fill(f, a, b::UnallocatedZeros, val, ax)
   return broadcasted_fill(f, b, a, val, ax)
+end
+
+# disambiguate
+for TA in (:UnallocatedZeros, :UnallocatedFill), TB in (:UnallocatedZeros, :UnallocatedFill)
+  @eval function FillArrays.broadcasted_fill(f, a::$TA, b::$TB, val, ax)
+    @assert alloctype(a) == alloctype(b)
+    return UnallocatedFill(Fill(val, ax), alloctype(a))
+  end
 end
 
 function FillArrays.kron_zeros(a::UnallocatedZeros, b::UnallocatedZeros, elt, ax)
