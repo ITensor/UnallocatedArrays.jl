@@ -1,4 +1,3 @@
-@eval module $(gensym())
 using FillArrays: FillArrays, AbstractFill, Fill, Zeros
 using UnallocatedArrays:
   UnallocatedFill, UnallocatedZeros, allocate, alloctype, set_alloctype
@@ -324,4 +323,3 @@ end
 ##     @test nparameters(ft) == 4
 ##   end
 ## end
-end

@@ -13,6 +13,10 @@ UnspecifiedTypes = "42b3faec-625b-4613-8ddc-352bf9672b8d"
 Adapt = "4.1.1"
 Aqua = "0.8.9"
 FillArrays = "1.13.0"
+JLArrays = "0.2"
+NDTensors = "0.3"
+SafeTestsets = "0.1"
+Suppressor = "0.2"
 Test = "1.10"
 TypeParameterAccessors = "0.1.0"
 UnspecifiedTypes = "0.1.0"
@@ -21,6 +25,10 @@ julia = "1.10"
 [extras]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
+Suppressor = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
+JLArrays = "27aeb0d3-9eb9-45fb-866b-73c2ecf80fcb"
+NDTensors = "23ae76d9-e61a-49c4-8f12-3f1a16adf9cf"
 
 [targets]
-test = ["Aqua", "Test"]
+test = ["Aqua", "Test", "Suppressor", "SafeTestsets", "JLArrays", "NDTensors"]
