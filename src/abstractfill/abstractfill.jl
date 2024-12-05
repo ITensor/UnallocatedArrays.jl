@@ -17,6 +17,9 @@ set_axestype(T::Type{<:AbstractFill}, ax::Type) = s(T, axestype, ax)
 
 TypeParameterAccessors.position(::Type{<:AbstractFill}, ::typeof(alloctype)) = Position(4)
 TypeParameterAccessors.position(::Type{<:AbstractFill}, ::typeof(axestype)) = Position(3)
+
+# this is type piracy (Aqua.jl complains) and should be moved to TypeParameterAccessors,
+# possibly via package extension
 function TypeParameterAccessors.default_type_parameters(::Type{<:AbstractFill})
   return (Float64, 0, Tuple{})
 end
