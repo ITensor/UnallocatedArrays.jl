@@ -13,6 +13,17 @@ function Broadcast.broadcasted(style::Broadcast.DefaultArrayStyle, f, a::Unalloc
   return _broadcasted(style, f, ZeroPreserving(f), a)
 end
 
+# disambiguation:
+for f in (:real, :imag, :conj, :(+), :(-))
+  @eval function Broadcast.broadcasted(
+    style::Broadcast.DefaultArrayStyle, f::typeof($f), a::UnallocatedZeros
+  )
+    return @invoke Broadcats.broadcasted(
+      style::Broadcast.DefaultArrayStyle, f::Any, a::UnallocatedZeros
+    )
+  end
+end
+
 function _broadcasted(
   style::Broadcast.DefaultArrayStyle, f, ::IsZeroPreserving, a::UnallocatedZeros
 )
