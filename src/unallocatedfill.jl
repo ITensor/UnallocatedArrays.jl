@@ -40,10 +40,6 @@ end
 function FillArrays.broadcasted_fill(f, a::UnallocatedFill, val, ax)
   return UnallocatedFill(Fill(val, ax), alloctype(a))
 end
-function FillArrays.broadcasted_fill(f, a::UnallocatedFill, b::UnallocatedFill, val, ax)
-  @assert alloctype(a) == alloctype(b)
-  return UnallocatedFill(Fill(val, ax), alloctype(a))
-end
 
 function FillArrays.broadcasted_fill(f, a::UnallocatedFill, b, val, ax)
   return UnallocatedFill(Fill(val, ax), alloctype(a))
