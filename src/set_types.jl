@@ -1,6 +1,3 @@
-using TypeParameterAccessors: TypeParameterAccessors
-using UnspecifiedTypes: UnspecifiedArray, UnspecifiedNumber, UnspecifiedZero
-
 function TypeParameterAccessors.default_type_parameters(::Type{<:UnallocatedArray})
   return (
     UnspecifiedNumber{UnspecifiedZero},

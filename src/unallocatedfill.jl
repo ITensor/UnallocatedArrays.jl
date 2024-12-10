@@ -1,6 +1,3 @@
-using FillArrays:
-  FillArrays, AbstractFill, Fill, broadcasted_fill, getindex_value, kron_fill, mult_fill
-
 struct UnallocatedFill{ElT,N,Axes,Alloc} <: AbstractFill{ElT,N,Axes}
   f::Fill{ElT,N,Axes}
   alloc::Alloc

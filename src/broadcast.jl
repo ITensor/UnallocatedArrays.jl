@@ -1,5 +1,3 @@
-using FillArrays: broadcasted_fill, broadcasted_zeros, getindex_value
-
 abstract type ZeroPreserving end
 struct IsZeroPreserving <: ZeroPreserving end
 struct NotZeroPreserving <: ZeroPreserving end
