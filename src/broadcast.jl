@@ -1,5 +1,3 @@
-using FillArrays: broadcasted_fill, broadcasted_zeros, getindex_value
-
 abstract type ZeroPreserving end
 struct IsZeroPreserving <: ZeroPreserving end
 struct NotZeroPreserving <: ZeroPreserving end
@@ -11,6 +9,17 @@ ZeroPreserving(::typeof(Real)) = IsZeroPreserving()
 
 function Broadcast.broadcasted(style::Broadcast.DefaultArrayStyle, f, a::UnallocatedZeros)
   return _broadcasted(style, f, ZeroPreserving(f), a)
+end
+
+# disambiguation:
+for f in (:real, :imag, :conj, :(+), :(-))
+  @eval function Broadcast.broadcasted(
+    style::Broadcast.DefaultArrayStyle, f::typeof($f), a::UnallocatedZeros
+  )
+    return @invoke Broadcats.broadcasted(
+      style::Broadcast.DefaultArrayStyle, f::Any, a::UnallocatedZeros
+    )
+  end
 end
 
 function _broadcasted(

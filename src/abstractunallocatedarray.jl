@@ -1,7 +1,3 @@
-using Adapt: adapt
-using FillArrays: FillArrays, getindex_value
-using TypeParameterAccessors: set_eltype, set_ndims
-
 const UnallocatedArray{ElT,N,AxesT,AllocT} = Union{
   UnallocatedFill{ElT,N,AxesT,AllocT},UnallocatedZeros{ElT,N,AxesT,AllocT}
 }
@@ -24,7 +20,6 @@ function Base.adjoint(a::UnallocatedArray)
   return set_alloctype(adjoint(parent(a)), alloctype(a))
 end
 
-using TypeParameterAccessors: set_type_parameter
 function set_alloctype(T::Type{<:UnallocatedArray}, alloc::Type{<:AbstractArray})
   return set_type_parameter(T, alloctype, alloc)
 end

@@ -1,6 +1,3 @@
-using FillArrays:
-  FillArrays, AbstractFill, Fill, broadcasted_fill, getindex_value, kron_fill, mult_fill
-
 struct UnallocatedFill{ElT,N,Axes,Alloc} <: AbstractFill{ElT,N,Axes}
   f::Fill{ElT,N,Axes}
   alloc::Alloc
@@ -38,10 +35,6 @@ function FillArrays.mult_fill(a::UnallocatedFill, b::UnallocatedFill, val, ax)
 end
 
 function FillArrays.broadcasted_fill(f, a::UnallocatedFill, val, ax)
-  return UnallocatedFill(Fill(val, ax), alloctype(a))
-end
-function FillArrays.broadcasted_fill(f, a::UnallocatedFill, b::UnallocatedFill, val, ax)
-  @assert alloctype(a) == alloctype(b)
   return UnallocatedFill(Fill(val, ax), alloctype(a))
 end
 

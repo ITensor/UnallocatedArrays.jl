@@ -1,14 +1,3 @@
-using FillArrays:
-  FillArrays,
-  AbstractZeros,
-  Fill,
-  Zeros,
-  broadcasted_fill,
-  broadcasted_zeros,
-  kron_fill,
-  kron_zeros,
-  mult_zeros
-
 ## TODO Should Alloc also be of ElT and N or should there be
 ## More freedom there?
 struct UnallocatedZeros{ElT,N,Axes,Alloc} <: AbstractZeros{ElT,N,Axes}
@@ -67,9 +56,16 @@ end
 function FillArrays.broadcasted_fill(f, a::UnallocatedZeros, b, val, ax)
   return UnallocatedFill(Fill(val, ax), alloctype(a))
 end
-
 function FillArrays.broadcasted_fill(f, a, b::UnallocatedZeros, val, ax)
   return broadcasted_fill(f, b, a, val, ax)
+end
+
+# disambiguate
+for TA in (:UnallocatedZeros, :UnallocatedFill), TB in (:UnallocatedZeros, :UnallocatedFill)
+  @eval function FillArrays.broadcasted_fill(f, a::$TA, b::$TB, val, ax)
+    @assert alloctype(a) == alloctype(b)
+    return UnallocatedFill(Fill(val, ax), alloctype(a))
+  end
 end
 
 function FillArrays.kron_zeros(a::UnallocatedZeros, b::UnallocatedZeros, elt, ax)
