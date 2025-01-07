@@ -3,5 +3,5 @@ using Aqua: Aqua
 using Test: @testset
 
 @testset "Code quality (Aqua.jl)" begin
-  Aqua.test_all(UnallocatedArrays; piracies=false)
+  Aqua.test_all(UnallocatedArrays)
 end

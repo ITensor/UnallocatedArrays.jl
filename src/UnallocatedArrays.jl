@@ -5,8 +5,8 @@ using TypeParameterAccessors:
   Position,
   set_eltype,
   set_ndims,
-  set_type_parameter,
-  type_parameter
+  set_type_parameters,
+  type_parameters
 using FillArrays:
   AbstractFill,
   FillArrays,
