@@ -21,7 +21,7 @@ function Base.adjoint(a::UnallocatedArray)
 end
 
 function set_alloctype(T::Type{<:UnallocatedArray}, alloc::Type{<:AbstractArray})
-  return set_type_parameter(T, alloctype, alloc)
+  return set_type_parameters(T, alloctype, alloc)
 end
 
 ## This overloads the definition defined in `FillArrays.jl`
