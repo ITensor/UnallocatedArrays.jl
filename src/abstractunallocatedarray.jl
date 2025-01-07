@@ -24,6 +24,23 @@ function set_alloctype(T::Type{<:UnallocatedArray}, alloc::Type{<:AbstractArray}
   return set_type_parameters(T, alloctype, alloc)
 end
 
+## TypeParameterAccessors
+
+for T in (:UnallocatedFill, :UnallocatedZeros)
+  @eval begin
+    TypeParameterAccessors.position(::Type{<:$T}, ::typeof(eltype)) = Position(1)
+    TypeParameterAccessors.position(::Type{<:$T}, ::typeof(ndims)) = Position(2)
+    TypeParameterAccessors.position(::Type{<:$T}, ::typeof(axes)) = Position(3)
+    function TypeParameterAccessors.position(::Type{<:$T}, ::typeof(alloctype))
+      return Position(4)
+    end
+
+    function TypeParameterAccessors.default_type_parameters(::Type{<:$T})
+      return (Float64, 1, Tuple{Base.OneTo{Int}}, Vector{Float64})
+    end
+  end
+end
+
 ## This overloads the definition defined in `FillArrays.jl`
 for STYPE in (:AbstractArray, :AbstractFill)
   @eval begin
