@@ -23,6 +23,17 @@ Base.parent(Z::UnallocatedZeros) = Z.z
 
 Base.convert(::Type{<:UnallocatedZeros}, A::UnallocatedZeros) = A
 
+TypeParameterAccessors.position(::Type{<:UnallocatedZeros}, ::typeof(eltype)) = Position(1)
+TypeParameterAccessors.position(::Type{<:UnallocatedZeros}, ::typeof(ndims)) = Position(2)
+TypeParameterAccessors.position(::Type{<:UnallocatedZeros}, ::typeof(axes)) = Position(3)
+function TypeParameterAccessors.position(::Type{<:UnallocatedZeros}, ::typeof(alloctype))
+  return Position(4)
+end
+
+function TypeParameterAccessors.default_type_parameters(::Type{<:UnallocatedZeros})
+  return (Float64, 1, Tuple{Base.OneTo{Int}}, Vector{Float64})
+end
+
 #############################################
 # Arithmatic
 

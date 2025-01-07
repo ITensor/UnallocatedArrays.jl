@@ -21,6 +21,17 @@ Base.parent(F::UnallocatedFill) = F.f
 
 Base.convert(::Type{<:UnallocatedFill}, A::UnallocatedFill) = A
 
+TypeParameterAccessors.position(::Type{<:UnallocatedFill}, ::typeof(eltype)) = Position(1)
+TypeParameterAccessors.position(::Type{<:UnallocatedFill}, ::typeof(ndims)) = Position(2)
+TypeParameterAccessors.position(::Type{<:UnallocatedFill}, ::typeof(axes)) = Position(3)
+function TypeParameterAccessors.position(::Type{<:UnallocatedFill}, ::typeof(alloctype))
+  return Position(4)
+end
+
+function TypeParameterAccessors.default_type_parameters(::Type{<:UnallocatedFill})
+  return (Float64, 1, Tuple{Base.OneTo{Int}}, Vector{Float64})
+end
+
 #############################################
 # Arithmatic
 
