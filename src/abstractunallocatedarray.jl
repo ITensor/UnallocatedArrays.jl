@@ -49,7 +49,10 @@ for STYPE in (:AbstractArray, :AbstractFill)
   end
 end
 
-function allocate(f::UnallocatedArray)
+# Assume allocated.
+allocate(a::AbstractArray) = a
+
+function allocate(f::AbstractFill)
   a = similar(f)
   fill!(a, getindex_value(f))
   return a
