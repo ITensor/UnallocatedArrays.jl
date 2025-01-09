@@ -1,23 +1,20 @@
-@eval module $(gensym())
 using FillArrays: FillArrays, AbstractFill, Fill, Zeros
-using UnallocatedArrays:
-  UnallocatedFill, UnallocatedZeros, allocate, alloctype, set_alloctype
+using JLArrays: @allowscalar, JLArray
 using LinearAlgebra: norm
 using Test: @test, @test_broken, @testset
+using UnallocatedArrays:
+  UnallocatedFill, UnallocatedZeros, allocate, alloctype, set_alloctype
 
-# TODO: Factorize this out into a seperate package so we can remove the NDTensors
-# test dependency. That also requires splitting of `NDTensors.CUDAExtensions`,
-# `NDTensors.AMDGPUExtensions`, `NDTensors.MetalExtensions`, etc.
-using NDTensors: NDTensors
-include(joinpath(pkgdir(NDTensors), "test", "NDTensorsTestUtils", "NDTensorsTestUtils.jl"))
-using .NDTensorsTestUtils: devices_list
+const arrayts = (Array, JLArray)
+const elts = (Float64, Float32, Complex{Float64}, Complex{Float32})
+@testset "Testing UnallocatedArrays on $arrayt with eltype $elt" for arrayt in arrayts,
+  elt in elts
 
-@testset "Testing UnallocatedArrays on $dev with eltype $elt" for dev in devices_list(ARGS),
-  elt in (Float64, Float32, ComplexF64, ComplexF32)
+  (Float64, Float32, ComplexF64, ComplexF32)
 
   @testset "Basic funcitonality" begin
     z = Zeros{elt}((2, 3))
-    Z = UnallocatedZeros(z, dev(Matrix{elt}))
+    Z = UnallocatedZeros(z, arrayt{elt,2})
 
     @test Z isa AbstractFill
     @test size(Z) == (2, 3)
@@ -25,10 +22,18 @@ using .NDTensorsTestUtils: devices_list
     @test iszero(sum(Z))
     @test iszero(norm(Z))
     @test iszero(Z[2, 3])
-    @test allocate(Z) isa dev(Matrix{elt})
-    Zp = UnallocatedZeros{elt}(Zeros(2, 3), dev(Matrix{elt}))
+    x = randn(elt, 2, 3)
+    x′ = allocate(x)
+    @test x === x′
+    a = allocate(z)
+    @test iszero(a)
+    @test a isa Matrix{elt}
+    a = allocate(Z)
+    @test iszero(a)
+    @test a isa arrayt{elt,2}
+    Zp = UnallocatedZeros{elt}(Zeros(2, 3), arrayt{elt,2})
     @test Zp == Z
-    Zp = set_alloctype(z, dev(Matrix{elt}))
+    Zp = set_alloctype(z, arrayt{elt,2})
     @test Zp == Z
     Zc = copy(Z)
     @test Zc == Z
@@ -41,10 +46,10 @@ using .NDTensorsTestUtils: devices_list
     Zs = similar(Z)
     @test Zs isa alloctype(Z)
 
-    Z = UnallocatedZeros(z, dev(Array))
+    Z = UnallocatedZeros(z, arrayt)
     Za = allocate(Z)
-    @test Za isa dev(Array{elt,2})
-    @test Za[1, 3] == zero(elt)
+    @test Za isa arrayt{elt,2}
+    @test @allowscalar(Za[1, 3]) == zero(elt)
 
     #########################################
     # UnallocatedFill
@@ -68,8 +73,8 @@ using .NDTensorsTestUtils: devices_list
     Fs[1, 1, 1] = elt(10)
     @test Fs[1, 1, 1] == elt(10)
 
-    Fp = set_alloctype(f, dev(Array{elt,ndims(f)}))
-    @test allocate(Fp) isa dev(Array{elt,ndims(f)})
+    Fp = set_alloctype(f, arrayt{elt,ndims(f)})
+    @test allocate(Fp) isa arrayt{elt,ndims(f)}
     @test Fp == F
     Fc = copy(F)
     @test Fc == F
@@ -82,20 +87,20 @@ using .NDTensorsTestUtils: devices_list
     Fc[2, 3, 4] = elt(0)
     @test iszero(Fc[2, 3, 4])
 
-    F = UnallocatedFill(f, dev(Array))
+    F = UnallocatedFill(f, arrayt)
     Fa = allocate(F)
-    @test Fa isa dev(Array{elt,3})
-    @test Fa[2, 1, 4] == elt(3)
+    @test Fa isa arrayt{elt,3}
+    @test @allowscalar(Fa[2, 1, 4]) == elt(3)
 
-    F = UnallocatedFill(f, dev(Vector))
+    F = UnallocatedFill(f, arrayt{<:Any,1})
     Fa = allocate(F)
     @test ndims(Fa) == 3
-    @test Fa isa dev(Array)
+    @test Fa isa arrayt
   end
 
   @testset "Multiplication" begin
     z = Zeros{elt}((2, 3))
-    Z = UnallocatedZeros(z, dev(Matrix{elt}))
+    Z = UnallocatedZeros(z, arrayt{elt,2})
 
     R = Z * Z'
     @test R isa UnallocatedZeros
@@ -118,9 +123,9 @@ using .NDTensorsTestUtils: devices_list
     ###################################
     ## UnallocatedFill
     f = Fill{elt}(3, (2, 12))
-    F = UnallocatedFill(f, dev(Matrix{elt}))
+    F = UnallocatedFill(f, arrayt{elt,2})
     p = Fill{elt}(4, (12, 5))
-    P = UnallocatedFill(p, dev(Array{elt,ndims(p)}))
+    P = UnallocatedFill(p, arrayt{elt,ndims(p)})
     R = F * P
     @test F isa UnallocatedFill
     @test R[1, 1] == elt(144)
@@ -147,7 +152,7 @@ using .NDTensorsTestUtils: devices_list
 
   @testset "Broadcast" begin
     z = Zeros{elt}((2, 3))
-    Z = UnallocatedZeros(z, dev(Matrix{elt}))
+    Z = UnallocatedZeros(z, arrayt{elt,2})
     R = elt(2) .* Z
     @test R isa UnallocatedZeros
     @test alloctype(R) == alloctype(Z)
@@ -159,7 +164,7 @@ using .NDTensorsTestUtils: devices_list
     @test R isa UnallocatedZeros
     @test alloctype(R) == alloctype(Z)
 
-    Z = UnallocatedZeros(Zeros{elt}((2, 3)), dev(Matrix{elt}))
+    Z = UnallocatedZeros(Zeros{elt}((2, 3)), arrayt{elt,2})
     R = Z + Z
     @test R isa UnallocatedZeros
     @test alloctype(R) == alloctype(Z)
@@ -175,7 +180,7 @@ using .NDTensorsTestUtils: devices_list
 
     Z .*= 1.0
     @test Z isa UnallocatedZeros
-    @test alloctype(R) == dev(Matrix{elt})
+    @test alloctype(R) == arrayt{elt,2}
     @test Z[2, 1] == zero(elt)
     ########################
     # UnallocatedFill
@@ -191,7 +196,7 @@ using .NDTensorsTestUtils: devices_list
     @test F2[1, 1, 1] == elt(8)
     @test alloctype(F2) == alloctype(F)
 
-    F = UnallocatedFill(Fill(elt(2), (2, 3)), dev(Matrix{elt}))
+    F = UnallocatedFill(Fill(elt(2), (2, 3)), arrayt{elt,2})
     R = Z + F
     @test R isa UnallocatedFill
     @test alloctype(R) == alloctype(Z)
@@ -200,20 +205,20 @@ using .NDTensorsTestUtils: devices_list
     @test R isa UnallocatedFill
     @test alloctype(R) == alloctype(Z)
 
-    F = UnallocatedFill(Fill(elt(3), (2, 12)), dev(Matrix{elt}))
+    F = UnallocatedFill(Fill(elt(3), (2, 12)), arrayt{elt,2})
     R = F .* F
     @test R isa UnallocatedFill
     @test R[2, 9] == elt(9)
     @test alloctype(R) == alloctype(F)
     @test size(R) == (2, 12)
 
-    P = UnallocatedFill(Fill(elt(4), (2, 3)), dev(Matrix{elt}))
+    P = UnallocatedFill(Fill(elt(4), (2, 3)), arrayt{elt,2})
     R = Z .* P
     @test R isa UnallocatedZeros
     @test alloctype(R) == alloctype(P)
     @test size(R) == (2, 3)
 
-    F = UnallocatedFill(Fill(elt(2), (2, 3)), dev(Matrix{elt}))
+    F = UnallocatedFill(Fill(elt(2), (2, 3)), arrayt{elt,2})
     R = F + F
     @test R isa UnallocatedFill
     @test R[1, 3] == elt(4)
@@ -226,13 +231,13 @@ using .NDTensorsTestUtils: devices_list
 
   ## TODO make other kron tests
   @testset "Kron" begin
-    A = UnallocatedZeros(Zeros{elt}(2), dev(Vector{elt}))
-    B = UnallocatedZeros(Zeros{elt}(2), dev(Vector{elt}))
+    A = UnallocatedZeros(Zeros{elt}(2), arrayt{elt,1})
+    B = UnallocatedZeros(Zeros{elt}(2), arrayt{elt,1})
     C = kron(A, B)
     @test C isa UnallocatedZeros
     @test alloctype(C) == alloctype(B)
 
-    B = UnallocatedFill(Fill(elt(2), (2)), dev(Vector{elt}))
+    B = UnallocatedFill(Fill(elt(2), (2)), arrayt{elt,1})
     C = kron(A, B)
     @test C isa UnallocatedZeros
     @test alloctype(C) == alloctype(B)
@@ -241,12 +246,10 @@ using .NDTensorsTestUtils: devices_list
     @test C isa UnallocatedZeros
     @test alloctype(C) == alloctype(B)
 
-    A = UnallocatedFill(Fill(elt(3), (2)), dev(Vector{elt}))
+    A = UnallocatedFill(Fill(elt(3), (2)), arrayt{elt,1})
     C = kron(A, B)
     @test C isa UnallocatedFill
     @test alloctype(C) == alloctype(B)
     @test C[1] == elt(6)
   end
-end
-
 end
