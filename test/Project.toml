@@ -12,6 +12,12 @@ UnallocatedArrays = "43c9e47c-e622-40fb-bf18-a09fc8c466b6"
 
 [compat]
 Aqua = "0.8.9"
+FillArrays = "1.13.0"
+JLArrays = "0.2.0"
+LinearAlgebra = "<0.0.1, 1"
+Pkg = "<0.0.1, 1"
 SafeTestsets = "0.1"
 Suppressor = "0.2"
 Test = "1.10"
+TypeParameterAccessors = "0.3.5"
+UnallocatedArrays = "0.1.3"
