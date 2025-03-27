@@ -1,14 +1,17 @@
 # # UnallocatedArrays.jl
 # 
-# [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://ITensor.github.io/UnallocatedArrays.jl/stable/)
-# [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://ITensor.github.io/UnallocatedArrays.jl/dev/)
+# [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://itensor.github.io/UnallocatedArrays.jl/stable/)
+# [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://itensor.github.io/UnallocatedArrays.jl/dev/)
 # [![Build Status](https://github.com/ITensor/UnallocatedArrays.jl/actions/workflows/Tests.yml/badge.svg?branch=main)](https://github.com/ITensor/UnallocatedArrays.jl/actions/workflows/Tests.yml?query=branch%3Amain)
 # [![Coverage](https://codecov.io/gh/ITensor/UnallocatedArrays.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/ITensor/UnallocatedArrays.jl)
 # [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 # [![Aqua](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
-# A module defining a set of unallocated immutable lazy arrays which will be used to quickly construct
-# tensors and allocating as little data as possible.
+# ## Support
+#
+# {CCQ_LOGO}
+#
+# UnallocatedArrays.jl is supported by the Flatiron Institute, a division of the Simons Foundation.
 
 # ## Installation instructions
 
