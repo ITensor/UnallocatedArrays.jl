@@ -1,70 +1,70 @@
-const UnallocatedArray{ElT,N,AxesT,AllocT} = Union{
-  UnallocatedFill{ElT,N,AxesT,AllocT},UnallocatedZeros{ElT,N,AxesT,AllocT}
+const UnallocatedArray{ElT, N, AxesT, AllocT} = Union{
+    UnallocatedFill{ElT, N, AxesT, AllocT}, UnallocatedZeros{ElT, N, AxesT, AllocT},
 }
 
 @inline Base.axes(A::UnallocatedArray) = axes(parent(A))
 Base.size(A::UnallocatedArray) = size(parent(A))
 function FillArrays.getindex_value(A::UnallocatedArray)
-  return getindex_value(parent(A))
+    return getindex_value(parent(A))
 end
 
 function Base.complex(A::UnallocatedArray)
-  return complex(eltype(A)).(A)
+    return complex(eltype(A)).(A)
 end
 
 function Base.transpose(a::UnallocatedArray)
-  return set_alloctype(transpose(parent(a)), alloctype(a))
+    return set_alloctype(transpose(parent(a)), alloctype(a))
 end
 
 function Base.adjoint(a::UnallocatedArray)
-  return set_alloctype(adjoint(parent(a)), alloctype(a))
+    return set_alloctype(adjoint(parent(a)), alloctype(a))
 end
 
 function set_alloctype(T::Type{<:UnallocatedArray}, alloc::Type{<:AbstractArray})
-  return set_type_parameters(T, alloctype, alloc)
+    return set_type_parameters(T, alloctype, alloc)
 end
 
 ## TypeParameterAccessors
 
 for T in (:UnallocatedFill, :UnallocatedZeros)
-  @eval begin
-    TypeParameterAccessors.position(::Type{<:$T}, ::typeof(eltype)) = Position(1)
-    TypeParameterAccessors.position(::Type{<:$T}, ::typeof(ndims)) = Position(2)
-    TypeParameterAccessors.position(::Type{<:$T}, ::typeof(axes)) = Position(3)
-    function TypeParameterAccessors.position(::Type{<:$T}, ::typeof(alloctype))
-      return Position(4)
-    end
+    @eval begin
+        TypeParameterAccessors.position(::Type{<:$T}, ::typeof(eltype)) = Position(1)
+        TypeParameterAccessors.position(::Type{<:$T}, ::typeof(ndims)) = Position(2)
+        TypeParameterAccessors.position(::Type{<:$T}, ::typeof(axes)) = Position(3)
+        function TypeParameterAccessors.position(::Type{<:$T}, ::typeof(alloctype))
+            return Position(4)
+        end
 
-    function TypeParameterAccessors.default_type_parameters(::Type{<:$T})
-      return (Float64, 1, Tuple{Base.OneTo{Int}}, Vector{Float64})
+        function TypeParameterAccessors.default_type_parameters(::Type{<:$T})
+            return (Float64, 1, Tuple{Base.OneTo{Int}}, Vector{Float64})
+        end
     end
-  end
 end
 
 ## This overloads the definition defined in `FillArrays.jl`
 for STYPE in (:AbstractArray, :AbstractFill)
-  @eval begin
-    @inline $STYPE{T}(F::UnallocatedArray{T}) where {T} = F
-    @inline $STYPE{T,N}(F::UnallocatedArray{T,N}) where {T,N} = F
-  end
+    @eval begin
+        @inline $STYPE{T}(F::UnallocatedArray{T}) where {T} = F
+        @inline $STYPE{T, N}(F::UnallocatedArray{T, N}) where {T, N} = F
+    end
 end
 
 # Assume allocated.
 allocate(a::AbstractArray) = a
 
 function allocate(f::AbstractFill)
-  a = similar(f)
-  fill!(a, getindex_value(f))
-  return a
+    a = similar(f)
+    fill!(a, getindex_value(f))
+    return a
 end
 
 function allocate(arraytype::Type{<:AbstractArray}, elt::Type, axes)
-  ArrayT = set_ndims(set_eltype(arraytype, elt), length(axes))
-  return similar(ArrayT, axes)
+    ArrayT = set_ndims(set_eltype(arraytype, elt), length(axes))
+    return similar(ArrayT, axes)
 end
 
-function Base.similar(f::UnallocatedArray, elt::Type, axes::Tuple{Int64,Vararg{Int64}})
-  return allocate(alloctype(f), elt, axes)
+function Base.similar(f::UnallocatedArray, elt::Type, axes::Tuple{Int64, Vararg{Int64}})
+    return allocate(alloctype(f), elt, axes)
 end
 
 ## TODO fix this because reshape loses alloctype
