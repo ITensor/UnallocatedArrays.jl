@@ -1,10 +1,10 @@
 function TypeParameterAccessors.default_type_parameters(::Type{<:UnallocatedArray})
-  return (
-    UnspecifiedNumber{UnspecifiedZero},
-    0,
-    Tuple{},
-    UnspecifiedArray{UnspecifiedNumber{UnspecifiedZero},0},
-  )
+    return (
+        UnspecifiedNumber{UnspecifiedZero},
+        0,
+        Tuple{},
+        UnspecifiedArray{UnspecifiedNumber{UnspecifiedZero}, 0},
+    )
 end
 
 unspecify_parameters(::Type{<:UnallocatedFill}) = UnallocatedFill

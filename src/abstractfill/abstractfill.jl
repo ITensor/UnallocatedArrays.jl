@@ -2,12 +2,12 @@
 ## not implemented by FillArrays
 ## TODO this might need a more generic name maybe like compute unit
 function alloctype(A::AbstractFill)
-  return A.alloc
+    return A.alloc
 end
 
 ## TODO this fails if the parameter is a type
 function alloctype(Atype::Type{<:AbstractFill})
-  return type_parameter(Atype, alloctype)
+    return type_parameter(Atype, alloctype)
 end
 
 axestype(T::Type{<:AbstractArray}) = type_parameter(axestype)
