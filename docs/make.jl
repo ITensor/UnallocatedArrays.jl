@@ -1,5 +1,5 @@
-using UnallocatedArrays: UnallocatedArrays
 using Documenter: Documenter, DocMeta, deploydocs, makedocs
+using UnallocatedArrays: UnallocatedArrays
 
 DocMeta.setdocmeta!(
     UnallocatedArrays, :DocTestSetup, :(using UnallocatedArrays); recursive = true
@@ -14,11 +14,12 @@ makedocs(;
     format = Documenter.HTML(;
         canonical = "https://itensor.github.io/UnallocatedArrays.jl",
         edit_link = "main",
-        assets = ["assets/favicon.ico", "assets/extras.css"],
+        assets = ["assets/favicon.ico", "assets/extras.css"]
     ),
-    pages = ["Home" => "index.md", "Reference" => "reference.md"],
+    pages = ["Home" => "index.md", "Reference" => "reference.md"]
 )
 
 deploydocs(;
-    repo = "github.com/ITensor/UnallocatedArrays.jl", devbranch = "main", push_preview = true
+    repo = "github.com/ITensor/UnallocatedArrays.jl", devbranch = "main",
+    push_preview = true
 )

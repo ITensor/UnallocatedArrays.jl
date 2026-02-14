@@ -1,5 +1,5 @@
-using UnallocatedArrays
 using BenchmarkTools
+using UnallocatedArrays
 
 SUITE = BenchmarkGroup()
 SUITE["rand"] = @benchmarkable rand(10)

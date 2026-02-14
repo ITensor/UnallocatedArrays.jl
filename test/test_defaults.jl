@@ -2,10 +2,10 @@
 ## seperate test file, and maybe make a package extension?
 @eval module $(gensym())
 using FillArrays: Fill, Zeros
-using UnallocatedArrays: UnallocatedFill, UnallocatedZeros
+using Test: @test, @testset
 using TypeParameterAccessors:
     Position, default_type_parameters, nparameters, set_type_parameters, type_parameters
-using Test: @test, @testset
+using UnallocatedArrays: UnallocatedFill, UnallocatedZeros
 
 #@testset "SetParameters" begin
 @testset "Testing $typ" for typ in (Fill, Zeros)
