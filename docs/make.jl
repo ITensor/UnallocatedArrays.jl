@@ -1,11 +1,12 @@
 using Documenter: Documenter, DocMeta, deploydocs, makedocs
+using ITensorFormatter: ITensorFormatter
 using UnallocatedArrays: UnallocatedArrays
 
 DocMeta.setdocmeta!(
     UnallocatedArrays, :DocTestSetup, :(using UnallocatedArrays); recursive = true
 )
 
-include("make_index.jl")
+ITensorFormatter.make_index!(pkgdir(UnallocatedArrays))
 
 makedocs(;
     modules = [UnallocatedArrays],
